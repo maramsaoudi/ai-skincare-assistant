@@ -52,7 +52,7 @@ class MainNavigation extends StatelessWidget {
             Transform.translate(
               offset: const Offset(0, -20),
               child: GestureDetector(
-                onTap: () => context.go('/scan'),
+                onTap: () => context.push('/scan'),
                 child: Container(
                   height: 64,
                   width: 64,

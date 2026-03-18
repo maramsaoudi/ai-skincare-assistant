@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ResultScreen extends StatelessWidget {
   final Map<String, dynamic> result;
@@ -17,7 +18,7 @@ class ResultScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Row(
                 children: [
-                  _iconButton(Icons.arrow_back, () => Navigator.pop(context)),
+                  _iconButton(Icons.arrow_back, () => context.pop()),
                   const Expanded(
                     child: Center(
                       child: Text(

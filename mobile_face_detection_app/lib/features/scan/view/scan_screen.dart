@@ -79,8 +79,7 @@ class _ScanScreenState extends State<ScanScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            _circleBtn(
-                                Icons.close, () => Navigator.pop(context)),
+                            _circleBtn(Icons.close, () => context.pop()),
                             const Text(
                               "Face Scan",
                               style: TextStyle(
