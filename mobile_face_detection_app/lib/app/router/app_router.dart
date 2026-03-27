@@ -1,4 +1,6 @@
 import 'package:face_detection_app/features/home/widget/main_navigation.dart';
+import 'package:face_detection_app/features/profile/view/profile_screen.dart';
+import 'package:face_detection_app/features/scan/domain/ScanResult.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -56,9 +58,15 @@ class AppRouter {
                 path: '/result',
                 name: 'result',
                 builder: (context, state) {
-                  final data = state.extra as Map<String, dynamic>;
-                  return ResultScreen(result: data);
+                  final result = state.extra as ScanResult;
+                  return ResultScreen(result: result);
                 },
+              ),
+              // 🔹 profile
+              GoRoute(
+                path: '/profile',
+                name: 'profile',
+                builder: (context, state) => const ProfileScreen(),
               ),
             ],
           ),

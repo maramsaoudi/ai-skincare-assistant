@@ -1,13 +1,15 @@
+import 'package:face_detection_app/features/scan/domain/ScanResult.dart';
+
 abstract class ScanState {}
 
 class ScanInitial extends ScanState {}
 
 class ScanLoading extends ScanState {}
 
-class ScanSuccess extends ScanState {
-  final Map<String, dynamic> data;
+class ScanLoaded extends ScanState {
+  final ScanResult result;
 
-  ScanSuccess(this.data);
+  ScanLoaded(this.result);
 }
 
 class ScanError extends ScanState {

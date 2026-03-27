@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../data/scan_repository.dart';
 import 'scan_state.dart';
@@ -7,14 +9,15 @@ class ScanCubit extends Cubit<ScanState> {
 
   ScanCubit(this.repository) : super(ScanInitial());
 
-  Future<void> scan(String userId) async {
-    emit(ScanLoading());
-
+  Future<void> analyze(File image) async {
     try {
-      final result = await repository.createScan(userId);
-      emit(ScanSuccess(result));
+      emit(ScanLoading());
+
+      final result = await repository.analyzeImage(image);
+
+      emit(ScanLoaded(result));
     } catch (e) {
-      emit(ScanError("Scan failed"));
+      emit(ScanError("Analysis failed"));
     }
   }
 }
