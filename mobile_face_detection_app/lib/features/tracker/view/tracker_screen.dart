@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
 
-class TrackerScreen extends StatelessWidget {
+class TrackerScreen extends StatefulWidget {
   const TrackerScreen({super.key});
 
+  @override
+  State<TrackerScreen> createState() => _TrackerScreenState();
+}
+
+class _TrackerScreenState extends State<TrackerScreen> {
   static const primary = Color(0xFFF06090);
   static const bg = Color(0xFFF8F6F6);
+  static const _scanImage = 'assets/images/skin.png';
+
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +37,6 @@ class TrackerScreen extends StatelessWidget {
     );
   }
 
-  // ================= HEADER =================
   Widget _header() {
     return Row(
       children: [
@@ -41,7 +50,7 @@ class TrackerScreen extends StatelessWidget {
         ),
         const SizedBox(width: 10),
         const Text(
-          "Glowlytics Tracker",
+          'Glowlytics Tracker',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const Spacer(),
@@ -55,7 +64,6 @@ class TrackerScreen extends StatelessWidget {
     );
   }
 
-  // ================= CHART =================
   Widget _scoreChart() {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -68,19 +76,20 @@ class TrackerScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
                   Text(
-                    "Skin Score Average",
+                    'Skin Score Average',
                     style: TextStyle(color: Colors.grey),
                   ),
                   SizedBox(height: 4),
                   Text(
-                    "82 pts",
+                    '82 pts',
                     style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
               const Spacer(),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: Colors.green.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(20),
@@ -90,19 +99,18 @@ class TrackerScreen extends StatelessWidget {
                     Icon(Icons.trending_up, size: 16, color: Colors.green),
                     SizedBox(width: 4),
                     Text(
-                      "+5%",
+                      '+5%',
                       style: TextStyle(
-                          color: Colors.green, fontWeight: FontWeight.bold),
-                    )
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
-
           const SizedBox(height: 20),
-
-          // fake chart (clean version)
           SizedBox(
             height: 80,
             child: Row(
@@ -124,101 +132,95 @@ class TrackerScreen extends StatelessWidget {
               }),
             ),
           ),
-
           const SizedBox(height: 6),
-
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Oct 1", style: TextStyle(fontSize: 10)),
-              Text("Oct 15", style: TextStyle(fontSize: 10)),
-              Text("Oct 31", style: TextStyle(fontSize: 10)),
+              Text('Oct 1', style: TextStyle(fontSize: 10)),
+              Text('Oct 15', style: TextStyle(fontSize: 10)),
+              Text('Oct 31', style: TextStyle(fontSize: 10)),
             ],
-          )
+          ),
         ],
       ),
     );
   }
 
-  // ================= CALENDAR =================
   Widget _calendar() {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: _card(),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.chevron_left),
-              const Spacer(),
-              const Text(
-                "October 2023",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const Spacer(),
-              const Icon(Icons.chevron_right),
-            ],
+      child: TableCalendar(
+        firstDay: DateTime.utc(2020, 1, 1),
+        lastDay: DateTime.utc(2035, 12, 31),
+        focusedDay: _focusedDay,
+        selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+        onDaySelected: (selectedDay, focusedDay) {
+          setState(() {
+            _selectedDay = selectedDay;
+            _focusedDay = focusedDay;
+          });
+        },
+        onPageChanged: (focusedDay) {
+          _focusedDay = focusedDay;
+        },
+        headerStyle: const HeaderStyle(
+          titleCentered: true,
+          formatButtonVisible: false,
+          leftChevronIcon: Icon(Icons.chevron_left, color: Colors.black),
+          rightChevronIcon: Icon(Icons.chevron_right, color: Colors.black),
+          titleTextStyle: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
           ),
-          const SizedBox(height: 16),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: 28,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 7,
-            ),
-            itemBuilder: (context, index) {
-              final day = index + 1;
-
-              final isSelected = day == 3;
-              final isActive = [6, 10, 15].contains(day);
-
-              return Center(
-                child: Container(
-                  height: 32,
-                  width: 32,
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? primary
-                        : isActive
-                            ? primary.withOpacity(0.2)
-                            : Colors.transparent,
-                    shape: BoxShape.circle,
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    "$day",
-                    style: TextStyle(
-                      color: isSelected
-                          ? Colors.white
-                          : isActive
-                              ? primary
-                              : Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              );
-            },
-          )
-        ],
+        ),
+        calendarStyle: CalendarStyle(
+          selectedDecoration: const BoxDecoration(
+            color: primary,
+            shape: BoxShape.circle,
+          ),
+          todayDecoration: BoxDecoration(
+            color: primary.withOpacity(0.2),
+            shape: BoxShape.circle,
+          ),
+          selectedTextStyle: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+          todayTextStyle: const TextStyle(
+            color: primary,
+            fontWeight: FontWeight.bold,
+          ),
+          defaultTextStyle: const TextStyle(fontWeight: FontWeight.w600),
+          weekendTextStyle: const TextStyle(fontWeight: FontWeight.w600),
+          outsideDaysVisible: false,
+        ),
+        daysOfWeekStyle: const DaysOfWeekStyle(
+          weekdayStyle: TextStyle(
+            color: Colors.grey,
+            fontWeight: FontWeight.w600,
+          ),
+          weekendStyle: TextStyle(
+            color: Colors.grey,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
       ),
     );
   }
 
-  // ================= SCANS =================
   Widget _recentScans() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          "Recent Scans",
+          'Recent Scans',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
-        _scanItem("Oct 15, 2023", "85", "Excellent", true),
-        _scanItem("Oct 10, 2023", "79", "Average", false),
-        _scanItem("Oct 06, 2023", "82", "Good", true, faded: true),
+        _scanItem('Oct 15, 2023', '85', 'Excellent', true),
+        _scanItem('Oct 10, 2023', '79', 'Average', false),
+        _scanItem('Oct 06, 2023', '82', 'Good', true, faded: true),
       ],
     );
   }
@@ -238,8 +240,8 @@ class TrackerScreen extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Image.network(
-              'https://picsum.photos/200',
+            child: Image.asset(
+              _scanImage,
               width: 60,
               height: 60,
               fit: BoxFit.cover,
@@ -252,7 +254,7 @@ class TrackerScreen extends StatelessWidget {
               children: [
                 Text(date, style: const TextStyle(fontWeight: FontWeight.bold)),
                 Text(
-                  "Routine check",
+                  'Routine check',
                   style: TextStyle(
                     color: Colors.grey.shade600,
                     fontSize: 12,
@@ -281,13 +283,12 @@ class TrackerScreen extends StatelessWidget {
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
   }
 
-  // ================= CARD =================
   BoxDecoration _card() {
     return BoxDecoration(
       color: Colors.white,

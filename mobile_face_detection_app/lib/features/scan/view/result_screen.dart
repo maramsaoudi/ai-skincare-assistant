@@ -1,8 +1,9 @@
+import 'package:face_detection_app/features/scan/domain/ScanResult.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class ResultScreen extends StatelessWidget {
-  final Map<String, dynamic> result;
+  final ScanResult result;
 
   const ResultScreen({super.key, required this.result});
 
@@ -124,12 +125,10 @@ class ResultScreen extends StatelessWidget {
                       crossAxisSpacing: 12,
                       mainAxisSpacing: 12,
                       children: [
-                        _metric("Acne", result['acneScore'], Colors.green),
-                        _metric(
-                            "Oiliness", result['oilinessScore'], Colors.orange),
-                        _metric(
-                            "Hydration", result['drynessScore'], Colors.green),
-                        _metric("Redness", result['rednessScore'], Colors.red),
+                        _metric("Acne", result.acne, Colors.green),
+                        _metric("Oiliness", result.oiliness, Colors.orange),
+                        _metric("Hydration", result.dryness, Colors.green),
+                        _metric("Redness", result.redness, Colors.red),
                       ],
                     ),
 
@@ -226,7 +225,7 @@ class ResultScreen extends StatelessWidget {
 
   // ===== METRIC CARD =====
   Widget _metric(String label, dynamic value, Color color) {
-    final percent = ((value ?? 0) * 100).toInt();
+    final percent = (value * 100).toInt();
 
     return Container(
       padding: const EdgeInsets.all(14),

@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,6 +19,19 @@ class _ScanScreenState extends State<ScanScreen> {
   File? _image;
   final picker = ImagePicker();
   final String userId = "03e30f88-220e-4365-8fae-508bf0d723af";
+  late final ScanCubit _scanCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _scanCubit = ScanCubit(ScanRepository());
+  }
+
+  @override
+  void dispose() {
+    _scanCubit.close();
+    super.dispose();
+  }
 
   Future<void> pickImage() async {
     final picked = await picker.pickImage(source: ImageSource.gallery);
@@ -30,8 +42,8 @@ class _ScanScreenState extends State<ScanScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => ScanCubit(ScanRepository(Dio())),
+    return BlocProvider<ScanCubit>.value(
+      value: _scanCubit,
       child: Builder(
         // ✅ FIX: NEW CONTEXT
         builder: (context) {
@@ -40,8 +52,8 @@ class _ScanScreenState extends State<ScanScreen> {
             body: SafeArea(
               child: BlocListener<ScanCubit, ScanState>(
                 listener: (context, state) {
-                  if (state is ScanSuccess) {
-                    context.push('/result', extra: state.data);
+                  if (state is ScanLoaded) {
+                    context.push('/result', extra: state.result);
                   }
 
                   if (state is ScanError) {
@@ -163,7 +175,9 @@ class _ScanScreenState extends State<ScanScreen> {
                                         return;
                                       }
 
-                                      context.read<ScanCubit>().scan(userId);
+                                      context
+                                          .read<ScanCubit>()
+                                          .analyze(_image!);
                                     },
                                     child: Container(
                                       height: 80,

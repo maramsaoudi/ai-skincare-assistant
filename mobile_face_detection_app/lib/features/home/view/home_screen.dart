@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   static const primary = Color(0xFFF06090);
   static const bg = Color(0xFFF8F6F6);
+  static const _avatarImage = 'assets/images/avatar.png';
+  static const _scanImage = 'assets/images/scan_placeholder.png';
+  static const _routineImage = 'assets/images/routine_placeholder.png';
+  static const _productImage = 'assets/images/product_placeholder.png';
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +19,7 @@ class HomeScreen extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           children: [
-            _header(),
+            _header(context),
             const SizedBox(height: 24),
             _latestScan(),
             const SizedBox(height: 24),
@@ -28,15 +33,18 @@ class HomeScreen extends StatelessWidget {
   }
 
   // ================= HEADER =================
-  Widget _header() {
+  Widget _header(BuildContext context) {
     return Row(
       children: [
-        CircleAvatar(
-          radius: 26,
-          backgroundColor: primary.withOpacity(0.1),
-          child: const CircleAvatar(
-            radius: 23,
-            backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=3'),
+        GestureDetector(
+          onTap: () => context.push('/profile'),
+          child: CircleAvatar(
+            radius: 26,
+            backgroundColor: primary.withOpacity(0.1),
+            child: const CircleAvatar(
+              radius: 23,
+              backgroundImage: AssetImage(_avatarImage),
+            ),
           ),
         ),
         const SizedBox(width: 12),
@@ -83,8 +91,8 @@ class HomeScreen extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.network(
-              'https://picsum.photos/200',
+            child: Image.asset(
+              _scanImage,
               width: 55,
               height: 55,
               fit: BoxFit.cover,
@@ -145,8 +153,8 @@ class HomeScreen extends StatelessWidget {
               ClipRRect(
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(20)),
-                child: Image.network(
-                  'https://picsum.photos/400/200',
+                child: Image.asset(
+                  _routineImage,
                   height: 140,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -251,7 +259,7 @@ class HomeScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               color: bg,
               image: const DecorationImage(
-                image: NetworkImage('https://picsum.photos/200'),
+                image: AssetImage(_productImage),
                 fit: BoxFit.cover,
               ),
             ),
