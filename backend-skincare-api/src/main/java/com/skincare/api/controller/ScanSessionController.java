@@ -1,8 +1,10 @@
 package com.skincare.api.controller;
 
+import com.skincare.api.dto.ScanResponse;
 import com.skincare.api.model.ScanSession;
 import com.skincare.api.service.ScanSessionService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,11 +21,11 @@ public class ScanSessionController {
 
     // ✅ POST /scans?userId=
     @PostMapping
-    public ScanSession createScan(
+    public ScanResponse createScan(
             @RequestParam UUID userId,
-            @RequestBody ScanSession scanSession) {
-
-        return scanService.createScan(userId, scanSession);
+            @RequestParam("image") MultipartFile image
+    ) {
+        return scanService.createScan(userId, image);
     }
 
     // ✅ GET /scans/{userId}

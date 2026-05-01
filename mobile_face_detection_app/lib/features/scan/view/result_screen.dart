@@ -9,6 +9,8 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final int score = result.overallScore;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8F6F6),
       body: SafeArea(
@@ -36,7 +38,7 @@ class ResultScreen extends StatelessWidget {
               ),
             ),
 
-            // ===== IMAGE WITH MARKERS =====
+            // ===== IMAGE =====
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Stack(
@@ -51,7 +53,7 @@ class ResultScreen extends StatelessWidget {
                     ),
                   ),
 
-                  // 🔴 MARKERS
+                  // MARKERS
                   Positioned(top: 30, left: 140, child: _marker(Colors.pink)),
                   Positioned(top: 130, left: 40, child: _marker(Colors.green)),
                   Positioned(
@@ -102,17 +104,18 @@ class ResultScreen extends StatelessWidget {
                 ),
                 child: ListView(
                   children: [
-                    const Text(
-                      "Overall Score: 84/100",
+                    // ===== SCORE =====
+                    Text(
+                      "Overall Score: $score/100",
                       textAlign: TextAlign.center,
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 22, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 6),
-                    const Text(
-                      "Your skin is looking healthy today!",
+                    Text(
+                      _scoreMessage(score),
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.grey),
+                      style: const TextStyle(color: Colors.grey),
                     ),
 
                     const SizedBox(height: 20),
@@ -141,19 +144,17 @@ class ResultScreen extends StatelessWidget {
                         color: const Color(0xFFF06090).withOpacity(0.1),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: const Column(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             "Insights",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Text(
-                            "• Increased oil production in T-zone.\n• Slight dryness on cheeks.\n• Use gentle cleanser & moisturizer.",
-                            style: TextStyle(fontSize: 13),
+                            result.insight,
+                            style: const TextStyle(fontSize: 13),
                           ),
                         ],
                       ),
@@ -186,7 +187,79 @@ class ResultScreen extends StatelessWidget {
     );
   }
 
-  // ===== SMALL ICON BUTTON =====
+  // ===== SCORE LOGIC =====
+
+  String _scoreMessage(int score) {
+    if (score > 80) return "Your skin is looking healthy today!";
+    if (score > 60)
+      return "Your skin is doing okay, small improvements needed.";
+    return "Your skin needs attention. Follow a proper routine.";
+  }
+
+  // ===== LEVEL =====
+  String _level(double v) {
+    if (v < 0.3) return "Low";
+    if (v < 0.7) return "Moderate";
+    return "High";
+  }
+
+  // ===== METRIC CARD =====
+  Widget _metric(String label, double value, Color color) {
+    final percent = (value * 100).toInt();
+
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 70,
+            width: 70,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                CircularProgressIndicator(
+                  value: value,
+                  strokeWidth: 6,
+                  backgroundColor: Colors.grey.shade200,
+                  valueColor: AlwaysStoppedAnimation(color),
+                ),
+                Text(
+                  "$percent%",
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 14),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            label.toUpperCase(),
+            style: const TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey,
+            ),
+          ),
+          Text(
+            _level(value),
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ===== ICON BUTTON =====
   Widget _iconButton(IconData icon, VoidCallback onTap) {
     return Container(
       decoration: BoxDecoration(
@@ -219,56 +292,6 @@ class ResultScreen extends StatelessWidget {
             shape: BoxShape.circle,
           ),
         ),
-      ),
-    );
-  }
-
-  // ===== METRIC CARD =====
-  Widget _metric(String label, dynamic value, Color color) {
-    final percent = (value * 100).toInt();
-
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 70,
-            width: 70,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                CircularProgressIndicator(
-                  value: percent / 100,
-                  strokeWidth: 6,
-                  backgroundColor: Colors.grey.shade200,
-                  valueColor: AlwaysStoppedAnimation(color),
-                ),
-                Text(
-                  "$percent%",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            label.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey,
-            ),
-          ),
-        ],
       ),
     );
   }
