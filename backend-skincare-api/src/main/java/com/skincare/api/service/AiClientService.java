@@ -29,7 +29,7 @@ public class AiClientService {
             };
 
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-            body.add("file", imageResource);
+            body.add("image", imageResource);
 
             HttpEntity<MultiValueMap<String, Object>> requestEntity =
                     new HttpEntity<>(body, headers);
@@ -43,7 +43,11 @@ public class AiClientService {
             return response.getBody();
 
         } catch (Exception e) {
-            throw new RuntimeException("Failed to analyze image with AI service", e);
+            e.printStackTrace();
+            throw new RuntimeException(
+                    "Failed to analyze image with AI service: " + e.getMessage(),
+                    e
+            );
         }
     }
 }

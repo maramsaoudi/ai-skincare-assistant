@@ -17,7 +17,8 @@ class ScanCubit extends Cubit<ScanState> {
 
       emit(ScanLoaded(result));
     } catch (e) {
-      emit(ScanError("Analysis failed"));
+      print('SCAN ERROR: $e');
+      emit(ScanError(e.toString()));
     }
   }
 }

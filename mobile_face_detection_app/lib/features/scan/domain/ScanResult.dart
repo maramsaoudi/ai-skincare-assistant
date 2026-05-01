@@ -17,7 +17,7 @@ class ScanResult {
 
   factory ScanResult.fromJson(Map<String, dynamic> json) {
     return ScanResult(
-      overallScore: json['overallScore'],
+      overallScore: (json['overallScore'] as num).toInt(),
       acne: (json['acne'] as num).toDouble() / 100,
       oiliness: (json['oiliness'] as num).toDouble() / 100,
       dryness: (json['dryness'] as num).toDouble() / 100,
