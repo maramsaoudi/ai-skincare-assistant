@@ -8,7 +8,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:face_detection_app/features/home/view/home_screen.dart';
 import 'package:face_detection_app/features/scan/view/scan_screen.dart';
-import 'package:face_detection_app/features/scan/view/result_screen.dart';
+import 'package:face_detection_app/features/scanResult/view/result_screen.dart';
 import 'package:face_detection_app/features/tracker/view/tracker_screen.dart';
 
 class AppRouter {
