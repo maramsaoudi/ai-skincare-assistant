@@ -6,13 +6,13 @@ import 'package:face_detection_app/features/scan/domain/ScanResult.dart';
 class ScanRepository {
   final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: 'http://10.216.80.154:8080',
+      baseUrl: 'http://127.0.0.1:8080',
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
     ),
   );
 
-Future<ScanResult> analyzeImage(File image) async {
+  Future<ScanResult> analyzeImage(File image) async {
     const String userId = '03e30f88-220e-4365-8fae-508bf0d723af';
 
     try {

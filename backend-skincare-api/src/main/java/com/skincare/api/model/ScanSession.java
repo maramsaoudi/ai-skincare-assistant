@@ -5,7 +5,6 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 @Entity
 @Getter
 @Setter
@@ -28,6 +27,10 @@ public class ScanSession {
     private Double drynessScore;
     private Double oilinessScore;
     private Double rednessScore;
+
+    private Double skinScore;
+
+    private Boolean dailyTrackerScan = false;
 
     private LocalDateTime createdAt;
 

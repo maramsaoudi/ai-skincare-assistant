@@ -1,7 +1,7 @@
 package com.skincare.api.controller;
 
+import com.skincare.api.dto.ScanHistoryDto;
 import com.skincare.api.dto.ScanResponse;
-import com.skincare.api.model.ScanSession;
 import com.skincare.api.service.ScanSessionService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,11 +15,12 @@ public class ScanSessionController {
 
     private final ScanSessionService scanService;
 
+
     public ScanSessionController(ScanSessionService scanService) {
         this.scanService = scanService;
     }
 
-    // ✅ POST /scans?userId=
+    // POST /scans?userId=...
     @PostMapping
     public ScanResponse createScan(
             @RequestParam UUID userId,
@@ -28,9 +29,14 @@ public class ScanSessionController {
         return scanService.createScan(userId, image);
     }
 
-    // ✅ GET /scans/{userId}
+    // GET /scans/{userId}
     @GetMapping("/{userId}")
-    public List<ScanSession> getUserScans(@PathVariable UUID userId) {
-        return scanService.getUserScans(userId);
+    public List<ScanHistoryDto> getUserScans(@PathVariable UUID userId) {
+        return scanService.getHistory(userId);
+    }
+
+    @GetMapping("/tracker/{userId}")
+    public List<ScanHistoryDto> getTrackerHistory(@PathVariable UUID userId) {
+        return scanService.getTrackerHistory(userId);
     }
 }
