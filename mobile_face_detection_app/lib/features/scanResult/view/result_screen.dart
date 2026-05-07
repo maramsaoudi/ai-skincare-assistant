@@ -1,4 +1,4 @@
-import 'package:face_detection_app/features/scan/domain/ScanResult.dart';
+import 'package:face_detection_app/features/scan/domain/models/scan_result.dart';
 import 'package:face_detection_app/features/scanResult/widgets/result_content.dart';
 import 'package:face_detection_app/features/scanResult/widgets/result_image_card.dart';
 import 'package:face_detection_app/features/scanResult/widgets/result_top_bar.dart';

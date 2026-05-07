@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:face_detection_app/features/scan/cubit/scan_cubit.dart';
 import 'package:face_detection_app/features/scan/cubit/scan_state.dart';
-import 'package:face_detection_app/features/scan/data/scan_repository.dart';
+import 'package:face_detection_app/features/scan/domain/repo/scan_repository.dart';
 import 'package:face_detection_app/features/scan/widgets/scan_bottom_actions.dart';
 import 'package:face_detection_app/features/scan/widgets/scan_face_frame.dart';
 import 'package:face_detection_app/features/scan/widgets/scan_header.dart';

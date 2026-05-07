@@ -1,4 +1,4 @@
-import 'package:face_detection_app/features/scan/domain/ScanResult.dart';
+import 'package:face_detection_app/features/scan/domain/models/scan_result.dart';
 import 'package:face_detection_app/features/scanResult/widgets/insights_card.dart';
 import 'package:face_detection_app/features/scanResult/widgets/metric_card.dart';
 import 'package:flutter/material.dart';
