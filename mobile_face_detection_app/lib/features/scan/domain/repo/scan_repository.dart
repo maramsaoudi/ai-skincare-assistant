@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:face_detection_app/features/scan/domain/ScanResult.dart';
+import 'package:face_detection_app/features/scan/domain/models/scan_result.dart';
 
 class ScanRepository {
   final Dio _dio = Dio(

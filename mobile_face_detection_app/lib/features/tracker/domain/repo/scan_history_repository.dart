@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:face_detection_app/features/tracker/models/scan_history_item.dart';
+import 'package:face_detection_app/features/tracker/domain/models/scan_history_item.dart';
 
 class ScanHistoryRepository {
   final Dio dio;

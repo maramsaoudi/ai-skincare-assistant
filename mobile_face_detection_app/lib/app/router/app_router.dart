@@ -1,6 +1,6 @@
 import 'package:face_detection_app/features/home/widget/main_navigation.dart';
 import 'package:face_detection_app/features/profile/view/profile_screen.dart';
-import 'package:face_detection_app/features/scan/domain/ScanResult.dart';
+import 'package:face_detection_app/features/scan/domain/models/scan_result.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:face_detection_app/features/tracker/cubit/scan_history_cubit.dart';
 import 'package:face_detection_app/features/tracker/cubit/scan_history_state.dart';
-import 'package:face_detection_app/features/tracker/repo/scan_history_repository.dart';
+import 'package:face_detection_app/features/tracker/domain/repo/scan_history_repository.dart';
 import 'package:face_detection_app/features/tracker/widgets/calendar_card.dart';
 import 'package:face_detection_app/features/tracker/widgets/recent_scans_section.dart';
 import 'package:face_detection_app/features/tracker/widgets/score_chart_card.dart';

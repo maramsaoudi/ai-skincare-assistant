@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../data/scan_repository.dart';
+import '../domain/repo/scan_repository.dart';
 import 'scan_state.dart';
 
 class ScanCubit extends Cubit<ScanState> {
